@@ -1,0 +1,275 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8"/>
+  <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+  <title>HealthCare Plus</title>
+  <link rel="stylesheet" href="style.css"/>
+  <link href="https://fonts.googleapis.com/css2?family=DM+Sans:wght@300;400;500;700&family=Playfair+Display:wght@700&display=swap" rel="stylesheet"/>
+</head>
+<body>
+
+  <!-- NAVBAR -->
+<nav class="navbar">
+  <div class="nav-links" id="navLinks">
+  <a href="#" onclick="showSection('home')">Home</a>
+  <a href="#" onclick="showSection('doctors')">Doctors</a>
+  <a href="#" onclick="showSection('appointments')">My Appointments</a>
+  <a href="#" id="doctorNavLink" onclick="showSection('doctorDashboard')" style="display:none;color:#028090;font-weight:700">🏥 My Dashboard</a>
+</div>
+<div class="nav-actions">
+  <button class="btn-sos" onclick="openModal('emergencyModal')">🚨 SOS</button>
+  <button class="btn-login" id="authBtn" onclick="openModal('loginModal')">Login</button>
+</div>
+</nav>
+  <!-- ===== HOME SECTION ===== -->
+  <section id="home" class="section active">
+    <div class="hero">
+      <div class="hero-text">
+        <div class="badge">🏥 Trusted by 10,000+ patients</div>
+        <h1>Your Health,<br/><span>Our Priority</span></h1>
+        <p>Book appointments with top specialists instantly. Emergency care available 24/7.</p>
+        <div class="hero-btns">
+          <button class="btn-primary" onclick="openModal('registerModal')">Get Started Free</button>
+          <button class="btn-outline" onclick="showSection('doctors')">View Doctors →</button>
+        </div>
+        <div class="stats">
+          <div class="stat"><strong>500+</strong><span>Doctors</span></div>
+          <div class="stat"><strong>10K+</strong><span>Patients</span></div>
+          <div class="stat"><strong>24/7</strong><span>Emergency</span></div>
+          <div class="stat"><strong>4.9★</strong><span>Rating</span></div>
+        </div>
+      </div>
+      <div class="hero-cards">
+        <div class="hcard green">✅ Dr. Sarah — Available Now</div>
+        <div class="hcard blue">📅 Next slot: 2:00 PM Today</div>
+        <div class="hcard red">🚨 Emergency: &lt;2 min response</div>
+        <div class="hcard purple">💊 100+ Specializations</div>
+      </div>
+    </div>
+
+    <!-- FEATURES -->
+    <div class="features">
+      <h2>Why Choose HealthCare Plus?</h2>
+      <div class="feature-grid">
+        <div class="feature-card">
+          <div class="icon">🚨</div>
+          <h3>Emergency SOS</h3>
+          <p>One tap alerts all available doctors instantly. Get help in under 2 minutes.</p>
+        </div>
+        <div class="feature-card">
+          <div class="icon">📅</div>
+          <h3>Easy Booking</h3>
+          <p>Book appointments in seconds. Choose your doctor, date, and time slot.</p>
+        </div>
+        <div class="feature-card">
+          <div class="icon">👨‍⚕️</div>
+          <h3>Top Specialists</h3>
+          <p>Browse 500+ verified doctors across 100+ medical specializations.</p>
+        </div>
+        <div class="feature-card">
+          <div class="icon">🔔</div>
+          <h3>Reminders</h3>
+          <p>Get automatic reminders before your appointment so you never miss one.</p>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- ===== DOCTORS SECTION ===== -->
+  <section id="doctors" class="section">
+    <div class="page-header">
+      <h2>Our Doctors</h2>
+      <input type="text" id="doctorSearch" placeholder="🔍 Search by name or specialization..." oninput="filterDoctors()"/>
+    </div>
+    <div id="doctorsList" class="doctors-grid">
+      <div class="loading">Loading doctors...</div>
+    </div>
+  </section>
+
+  <!-- ===== APPOINTMENTS SECTION ===== -->
+  <section id="appointments" class="section">
+    <div class="page-header">
+      <h2>My Appointments</h2>
+      <button class="btn-primary" onclick="openModal('bookModal')">+ Book New</button>
+    </div>
+    <div id="appointmentsList" class="appointments-list">
+      <div class="empty-state">Please login to view your appointments.</div>
+    </div>
+  </section>
+
+  <!-- ===== MODALS ===== -->
+
+  <!-- LOGIN MODAL -->
+  <div class="modal" id="loginModal">
+    <div class="modal-box">
+      <button class="close-btn" onclick="closeModal('loginModal')">✕</button>
+      <h2>Welcome Back</h2>
+      <p class="modal-sub">Login to your account</p>
+      <div class="form-group">
+        <label>Email</label>
+        <input type="email" id="loginEmail" placeholder="your@email.com"/>
+      </div>
+      <div class="form-group">
+        <label>Password</label>
+        <input type="password" id="loginPass" placeholder="Your password"/>
+      </div>
+      <div id="loginError" class="error-msg"></div>
+      <button class="btn-primary full" onclick="login()">Login</button>
+      <p class="switch-auth">No account? <a href="#" onclick="switchModal('loginModal','registerModal')">Register here</a></p>
+    </div>
+  </div>
+
+  <!-- REGISTER MODAL -->
+  <div class="modal" id="registerModal">
+    <div class="modal-box">
+      <button class="close-btn" onclick="closeModal('registerModal')">✕</button>
+      <h2>Create Account</h2>
+      <p class="modal-sub">Join HealthCare Plus today</p>
+      <div class="form-group">
+        <label>Full Name</label>
+        <input type="text" id="regName" placeholder="John Doe"/>
+      </div>
+      <div class="form-group">
+        <label>Email</label>
+        <input type="email" id="regEmail" placeholder="your@email.com"/>
+      </div>
+      <div class="form-group">
+        <label>Phone</label>
+        <input type="text" id="regPhone" placeholder="+91 9999999999"/>
+      </div>
+      <div class="form-group">
+        <label>Password</label>
+        <input type="password" id="regPass" placeholder="Min 6 characters"/>
+      </div>
+      <div class="form-group">
+        <label>Role</label>
+        <select id="regRole" onchange="toggleDoctorFields()">
+          <option value="patient">Patient</option>
+          <option value="doctor">Doctor</option>
+        </select>
+      </div>
+      <div id="doctorFields" style="display:none">
+        <div class="form-group">
+          <label>Specialization</label>
+          <input type="text" id="regSpec" placeholder="e.g. Cardiologist"/>
+        </div>
+        <div class="form-group">
+          <label>Years of Experience</label>
+          <input type="number" id="regExp" placeholder="e.g. 5"/>
+        </div>
+      </div>
+      <div id="registerError" class="error-msg"></div>
+      <button class="btn-primary full" onclick="register()">Create Account</button>
+      <p class="switch-auth">Have account? <a href="#" onclick="switchModal('registerModal','loginModal')">Login here</a></p>
+    </div>
+  </div>
+
+  <!-- BOOK APPOINTMENT MODAL -->
+  <!-- BOOK APPOINTMENT MODAL -->
+<div class="modal" id="bookModal">
+  <div class="modal-box">
+    <button class="close-btn" onclick="closeModal('bookModal')">✕</button>
+    <h2>Book Appointment</h2>
+    <div class="form-group">
+      <label>Select Doctor</label>
+      <select id="bookDoctor" onchange="onDoctorOrDateChange()">
+        <option value="">-- Select a Doctor --</option>
+      </select>
+    </div>
+    <div class="form-group">
+      <label>Date</label>
+      <input type="date" id="bookDate" onchange="onDoctorOrDateChange()"/>
+    </div>
+
+    <!-- SLOTS SECTION -->
+    <div class="form-group" id="slotsSection" style="display:none">
+      <label>Available Time Slots</label>
+      <div id="slotsGrid" class="slots-grid"></div>
+    </div>
+
+    <input type="hidden" id="bookTime"/>
+
+    <div class="form-group">
+      <label>Notes (optional)</label>
+      <textarea id="bookNotes" placeholder="Describe your symptoms..."></textarea>
+    </div>
+    <div class="form-group checkbox-group">
+      <input type="checkbox" id="bookEmergency"/>
+      <label for="bookEmergency">🚨 This is an emergency</label>
+    </div>
+    <div id="bookError" class="error-msg"></div>
+    <button class="btn-primary full" onclick="bookAppointment()">Confirm Booking</button>
+  </div>
+</div>
+
+  <!-- EMERGENCY MODAL -->
+  <div class="modal" id="emergencyModal">
+    <div class="modal-box emergency-box">
+      <button class="close-btn" onclick="closeModal('emergencyModal')">✕</button>
+      <div class="sos-icon">🚨</div>
+      <h2>Emergency Alert</h2>
+      <p class="modal-sub">All available doctors will be notified immediately</p>
+      <div class="form-group">
+        <label>Describe your emergency</label>
+        <textarea id="emergencyDesc" placeholder="E.g. Chest pain, difficulty breathing, severe bleeding..."></textarea>
+      </div>
+      <div id="emergencyError" class="error-msg"></div>
+      <button class="btn-sos-big" onclick="sendSOS()">🚨 Send Emergency Alert Now</button>
+    </div>
+  </div>
+
+  <script src="app.js"></script>
+  <!-- RATE DOCTOR MODAL -->
+<div class="modal" id="rateModal">
+  <div class="modal-box">
+    <button class="close-btn" onclick="closeModal('rateModal')">✕</button>
+    <h2 id="rateModalTitle">Rate Doctor</h2>
+    <p class="modal-sub">How was your experience?</p>
+    <div class="star-row">
+      <button class="star-btn" onclick="highlightStars(1)">☆</button>
+      <button class="star-btn" onclick="highlightStars(2)">☆</button>
+      <button class="star-btn" onclick="highlightStars(3)">☆</button>
+      <button class="star-btn" onclick="highlightStars(4)">☆</button>
+      <button class="star-btn" onclick="highlightStars(5)">☆</button>
+    </div>
+    <div class="form-group" style="margin-top:16px">
+      <label>Leave a comment (optional)</label>
+      <textarea id="ratingComment" placeholder="How was the appointment?"></textarea>
+    </div>
+    <div id="ratingError" class="error-msg"></div>
+    <button class="btn-primary full" onclick="submitRating()">Submit Rating</button>
+  </div>
+</div>
+<!-- DOCTOR DASHBOARD SECTION -->
+<section id="doctorDashboard" class="section">
+  <div class="page-header">
+    <h2>👨‍⚕️ Doctor Dashboard</h2>
+    <div style="display:flex;gap:10px;align-items:center">
+      <span id="docAvailToggleLabel" style="font-size:14px;color:var(--muted)">You are: </span>
+      <button id="docAvailBtn" class="btn-avail-on" onclick="toggleMyAvailability()">✅ Available</button>
+    </div>
+  </div>
+
+  <!-- Stats Row -->
+  <div class="doc-stats-row" id="docStatsRow">
+    <div class="doc-stat-card blue"><h3 id="statTotal">0</h3><p>Total Appointments</p></div>
+    <div class="doc-stat-card green"><h3 id="statConfirmed">0</h3><p>Confirmed</p></div>
+    <div class="doc-stat-card amber"><h3 id="statPending">0</h3><p>Pending</p></div>
+    <div class="doc-stat-card red"><h3 id="statCancelled">0</h3><p>Cancelled</p></div>
+  </div>
+
+  <!-- Tabs -->
+  <div class="doc-tabs">
+    <button class="doc-tab active" onclick="switchDocTab('pending')">🕐 Pending</button>
+    <button class="doc-tab" onclick="switchDocTab('confirmed')">✅ Confirmed</button>
+    <button class="doc-tab" onclick="switchDocTab('completed')">🏁 Completed</button>
+    <button class="doc-tab" onclick="switchDocTab('all')">📋 All</button>
+  </div>
+
+  <div id="docAppointmentsList" class="appointments-list">
+    <div class="loading">Loading appointments...</div>
+  </div>
+</section>
+</body>
+</html>
